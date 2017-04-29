@@ -14,14 +14,14 @@ routers.get('/',checkNotLogin,(req,res,next)=>{
 })
 //singup
 routers.post('/',checkNotLogin,(req,res,next)=>{
-	let name=req.fields.name;
-	let gender=req.fields.gender;
-	let bio=req.fields.bio;
-	let avatar=req.fields.avatar.path.split(path.sep).pop();
-	let password=sha1(req.fields.password);
-	let repassword=req.fields.repassword;
+	var name=req.fields.name;
+	var gender=req.fields.gender;
+	var bio=req.fields.bio;
+	var avatar=req.fields.avatar.path.split(path.sep).pop();
+	var password=sha1(req.fields.password);
+	var repassword=req.fields.repassword;
 
-	let user={
+	var user={
 		name:name,
 		gender:gender,
 		bio:bio,
