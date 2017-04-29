@@ -1,7 +1,9 @@
 var routers=require('express').Router();
-var checkNotLogin=require('./middlewares/check').checkNotLogin;
+var checkLogin=require('./middlewares/check').checkLogin;
 routers.get('/',checkLogin,(req,res,next)=>{
-	res.send(req.flash());
+	req.session.user=null;
+	req.flash('success','login out succeed');
+	res.redirect('/posts');
 })
 
 module.exports=routers;

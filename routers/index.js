@@ -15,7 +15,7 @@ module.exports=(app)=>{
 	app.use('/signin',require('./signin'));
 	//登出
 	app.use('/signout',require('./signout'));
-	//发布
+	//文章的操作
 	app.use('/posts',require('./posts'));
 	//404
 	app.use((req,res)=>{

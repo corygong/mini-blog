@@ -2,6 +2,7 @@ var marked=require('marked');
 var Post=require('../lib/mongo').Post;
 var CommentModel=require('./comments');
 
+//post的留言数量
 Post.plugin('addCommentsCount',{
 	afterFind:(posts)=>{
 		return Promise.all(posts.map((post)=>{
@@ -40,7 +41,7 @@ module.exports={
 	create:function create (post) {
 		return Post.create(post).exec();
 	},
-	getPostById:function getPostById(){
+	getPostById:function getPostById(postId){
 		return Post
 			.findOne({_id:postId})
 			.populate({path:'author',model:'User'})
@@ -66,13 +67,25 @@ module.exports={
 			.update({_id:postId},{$inc:{pv:1}})
 			.exec();
 	},
-	getRawPostById:function getRawPostById(){
-
+	getRawPostById:function getRawPostById(postId){
+		return Post
+			.findOne({_id:postId})
+			.populate({path:'author',model:'User'})
+			.exec();
 	},
-	updatePostById:function updatePostById(){
-
+	updatePostById:function updatePostById(postId,author,data){
+		return Post
+			.update({author:author,_id:postId},{$set:data})
+			.exec();
 	},
-	delPostById:function delPostById(){
-
+	delPostById:function delPostById(postId,author){
+		return Post
+			.remove({author:author,_id:postId})
+			.exec()
+			.then((res)=>{
+				if (res.result.ok && res.result.n>0) {
+					return CommentModel.delCommentsByPostId(postId);
+				};
+			})
 	}
 }

@@ -1,7 +1,7 @@
 var marked=require('marked');
 var Comment=require('../lib/mongo').Comment;
 
-Comment.plugin('contentToHtml',{
+Comment.plugin('content2Html',{
 	afterFind:function(comments){
 		return comments.map(function (comment){
 			comment.content=marked(comment.content);
@@ -14,19 +14,30 @@ Comment.plugin('contentToHtml',{
 module.exports={
 
 	create:function create (comment) {
-		return Comment.create(comment).exec();
+		return Comment
+			.create(comment)
+			.exec();
 	},
 	delCommentById:function delCommentById(commentId,author){
-		return Comment.remove({author:author,_id:commentId}).exec();
+		return Comment
+			.remove({author:author,_id:commentId})
+			.exec();
 	},
 	delCommentsByPostId:function delCommentsByPostId(){
-		return Comment.remove({postId:postId}).exec();
+		return Comment
+			.remove({postId:postId})
+			.exec();
 	},
 	getComments:function getComments(postId){
-		return Comment.find({postId:postId}).populate({path:'author',model:'User'}).sort({_id:1}).addCreatedAt().contentToHtml().exec();
+		return Comment
+			.find({postId:postId}).populate({path:'author',model:'User'})
+			.sort({_id:1}).addCreatedAt().content2Html()
+			.exec();
 	},
 	getCommentsCount:function getCommentsCount(postId){
-		return Comment.count({postId:postId}).exec();
+		return Comment
+			.count({postId:postId})
+			.exec();
 	}
 
 }
