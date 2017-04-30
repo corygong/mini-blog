@@ -1,3 +1,4 @@
+var path=require('path');
 var express=require('express');
 var session=require('express-session');
 var mongoStore=require('connect-mongo')(session);
@@ -8,7 +9,7 @@ var pkg=require('./package');
 var winston=require('winston');
 var expressWinston=require('express-winston');
 
-var path=require('path');
+
 
 
 var app=express();
@@ -19,7 +20,7 @@ var userRouter=require('./routers/users');*/
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine','ejs');
 
-app.use(express.static(path.join(__dirname,'static')));
+app.use(express.static(path.join(__dirname,'public')));
 
 app.use(session({
     name:config.session.key,
@@ -38,7 +39,7 @@ app.use(flash());
 
 //表单和文件上传
 app.use(require('express-formidable')({
-    uploadDir:path.join(__dirname,'static/images'),
+    uploadDir:path.join(__dirname,'public/img'),
     keepExtensions:true
 }));
 
@@ -58,7 +59,7 @@ app.use((req,res,next)=>{
 //正常请求日志
 app.use(expressWinston.logger({
     transports:[
-        new winston.transports.Console({
+        new (winston.transports.Console)({
             json:true,
             colorize:true
         }),
@@ -90,7 +91,7 @@ if (module.parent) {
     module.exports=app;
 }else{
     app.listen(config.port,()=>{
-        console.log('${pkg.name} listening on port ${config.port}');
+        console.log(`${pkg.name} listening on port ${config.port}`);
     });
 }
 

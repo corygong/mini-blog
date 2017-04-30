@@ -5,7 +5,7 @@ router.get('/',(req,res)=>{
 	res.redirect('/posts');
 });*/
 
-module.exports=(app)=>{
+module.exports = function(app){
 	app.get('/',(req,res)=>{
 		res.redirect('/posts');
 	});
@@ -21,6 +21,6 @@ module.exports=(app)=>{
 	app.use((req,res)=>{
 		if (!res.headersSent) {
 			res.status(404).render('404');
-		};
-	})
+		}
+	});
 };

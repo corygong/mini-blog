@@ -21,7 +21,7 @@ router.get('/create',checkLogin,(req,res,next)=>{
 //publish one post
 router.post('/',checkLogin,(req,res,next)=>{
 	var post={
-		author:req.session.user._id,
+		authorId:req.session.user._id,
 		title:req.fields.title,
 		content:req.fields.content,
 		pv:0
@@ -29,7 +29,7 @@ router.post('/',checkLogin,(req,res,next)=>{
 	PostModel.create(post).then((result)=>{
 		post=result.ops[0];
 		req.flash('success','published success');
-		res.redirect('/post/${post._id}')
+		res.redirect(`/posts/${post._id}`)
 	}).catch(next);
 })
 
@@ -75,7 +75,7 @@ router.post('/:postId/edit',checkLogin,(req,res,next)=>{
 	var content=req.fields.content;
 	PostModel.updatePostById(postId,authorId,{title:title,content:content}).then(()=>{
 		req.flash('success','edit the post succeed');
-		res.redirect('/posts/${postId}');
+		res.redirect(`/posts/${postId}`);
 	}).catch(next);
 
 })
@@ -115,4 +115,4 @@ router.get('/:postId/comment/:commentId/remove',checkLogin,(req,res,next)=>{
 })
 
 
-module.exports=method;
+module.exports=router;

@@ -4,7 +4,7 @@ var sha1=require('sha1');
 
 var UserModel=require('../models/users');
 
-var checkNotLogin=require('./middlewares/check').checkNotLogin;
+var checkNotLogin=require('../middlewares/check').checkNotLogin;
 
 //sign in page
 routers.get('/',checkNotLogin,(req,res,next)=>{
@@ -31,5 +31,5 @@ routers.post('/',checkNotLogin,(req,res,next)=>{
 			res.redirect('/posts');
 		})
 		.catch(next);
-})
+});
 module.exports=routers;
